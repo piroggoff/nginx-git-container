@@ -24,6 +24,7 @@ RUN ln -sf /etc/nginx/sites-available/*.conf /etc/nginx/sites-enabled/ && \
 
 # 5) Создаём директорию для bare‑репозиториев (точка монтирования)
 RUN mkdir -p /var/www/git && \
+    chown -R www-data:www-data /var/www/git && \
     mkdir -p /var/run && \
     chown -R www-data:www-data /var/www/git
 

@@ -1,5 +1,6 @@
-fcgiwrap
-apache2-utils
+nginx
 git
-curl
+fcgiwrap
 spawn-fcgi
+ca-certificates
+apache2-utils
