@@ -1,0 +1,5 @@
+fcgiwrap
+apache2-utils
+git
+curl
+spawn-fcgi

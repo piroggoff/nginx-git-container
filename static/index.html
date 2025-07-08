@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nginx Git Container</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .status {
+            background: #e8f5e8;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .links {
+            list-style: none;
+            padding: 0;
+        }
+        .links li {
+            margin: 10px 0;
+        }
+        .links a {
+            color: #0066cc;
+            text-decoration: none;
+            padding: 5px 10px;
+            border: 1px solid #0066cc;
+            border-radius: 3px;
+            display: inline-block;
+        }
+        .links a:hover {
+            background: #0066cc;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🐳 Nginx Git Container</h1>
+        
+        <div class="status">
+            <strong>Статус:</strong> Контейнер работает успешно!
+        </div>
+        
+        <h2>Доступные сервисы:</h2>
+        <ul class="links">
+            <li><a href="/nginx_status">Статус Nginx</a></li>
+            <li><a href="/git/">Git репозитории</a></li>
+            <li><a href="/test.cgi">Тест CGI</a></li>
+        </ul>
+        
+        <h2>Информация о контейнере:</h2>
+        <ul>
+            <li><strong>Nginx:</strong> stable-perl</li>
+            <li><strong>FastCGI:</strong> fcgiwrap</li>
+            <li><strong>Git:</strong> HTTP backend</li>
+            <li><strong>Порты:</strong> 80, 443</li>
+        </ul>
+    </div>
+</body>
+</html>

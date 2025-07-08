@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  nginx-git:
+    build: .
+    container_name: nginx-git-container
+    
+    # Открытие портов
+    ports:
+      - "80:80"
+      - "443:443"
+    
+    # Только volume для git репозиториев
+    volumes:
+      - git-repos:/var/git/repositories
+      - ./logs:/var/log/nginx
+    
+    # Переменные окружения
+    environment:
+      - NGINX_HOST=localhost
+      - NGINX_PORT=80
+      - TZ=Europe/Moscow
+      - GIT_PROJECT_ROOT=/var/git/repositories
+    
+    # Автоматический перезапуск
+    restart: unless-stopped
+    
+    # Проверка здоровья контейнера
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+# Именованные volumes
+volumes:
+  git-repos:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/evgenz/git-repositories
+      o: bind
