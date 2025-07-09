@@ -15,19 +15,21 @@ RUN apt-get update && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/packages.txt
 
 # 3) Копируем все конфиги Nginx из папки sites-available
-COPY sites-available/*.conf /etc/nginx/sites-available/
+COPY conf-files/sites-enabled/*.conf /etc/nginx/sites-enabled/
+COPY conf-files/nginx.conf /etc/nginx/
+COPY git/ /var/www/git/
 COPY static/ /var/www/static/
 
 # 4) Включаем все сайты и отключаем дефолтный
-RUN ln -sf /etc/nginx/sites-available/*.conf /etc/nginx/sites-enabled/ && \
-    rm -f /etc/nginx/sites-enabled/default 2>/dev/null
+RUN rm -f /etc/nginx/sites-enabled/default 2>/dev/null
 
-# 5) Создаём директорию для bare‑репозиториев (точка монтирования)
+# 5) Создаём директорию для bare‑репозиториев (точка монтирования) 
+# При монтировании volume в Windows права будут определяться как root,
+# поэтому в данном случае будет применено копирование как conf файлов, так и git-репозиториев.
 RUN mkdir -p /var/www/git && \
-    chown -R www-data:www-data /var/www/git && \
     mkdir -p /var/run && \
-    chown -R www-data:www-data /var/www/git
-
+    chown -R www-data:www-data /var/www/git && \
+    chown -R www-data:www-data /var/run
 # 6) Копируем и настраиваем запуск fcgiwrap через spawn-fcgi
 #    Запуск будет из entrypoint’а
 COPY docker-entrypoint.sh /usr/local/bin/

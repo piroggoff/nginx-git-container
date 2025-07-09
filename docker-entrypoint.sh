@@ -7,5 +7,8 @@ spawn-fcgi -s /var/run/fcgiwrap.socket -u www-data -g www-data /usr/sbin/fcgiwra
 # Ждем создания сокета
 sleep 2
 
+# Проверяем конфиг nginx
+nginx -t
+
 # Запускаем nginx
-exec nginx -g "daemon off;"
+nginx -g "daemon off;"
