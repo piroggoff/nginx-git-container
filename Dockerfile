@@ -17,7 +17,7 @@ RUN apt-get update && \
 # 3) Копируем все конфиги Nginx из папки sites-available
 COPY conf-files/sites-enabled/*.conf /etc/nginx/sites-enabled/
 COPY conf-files/nginx.conf /etc/nginx/
-COPY git/ /var/www/git/
+#COPY git/ /var/www/git/
 COPY static/ /var/www/static/
 
 # 4) Включаем все сайты и отключаем дефолтный
@@ -30,12 +30,13 @@ RUN mkdir -p /var/www/git && \
     mkdir -p /var/run && \
     chown -R www-data:www-data /var/www/git && \
     chown -R www-data:www-data /var/run
+
 # 6) Копируем и настраиваем запуск fcgiwrap через spawn-fcgi
 #    Запуск будет из entrypoint’а
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-# 7) Открываем порт 80
+# 7) Указываем порт 80
 EXPOSE 80
 
 # 8) Точка входа

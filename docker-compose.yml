@@ -2,17 +2,12 @@ services:
   nginx-git:
     build: .
     container_name: nginx-git-container
-    
-    # Открытие портов
     ports:
       - "80:80"
-    
-    # Только volume для git репозиториев
     volumes:
-      - C:/Users/Evgeny/code/nginx-git-container/logs:/var/log/nginx/
-      - C:/Users/Evgeny/code/nginx-git-container/authentication:/etc/nginx/passwd/
-
-    # Переменные окружения
+      - $(NGINX_LOG_DIR):/var/log/nginx/
+      - $(NGINX_PASS_DIR):/etc/nginx/passwd/
+      - $(GIT_REPOS_DIR):/var/www/git/
     environment:
       - NGINX_HOST=localhost
       - NGINX_PORT=80
@@ -34,5 +29,5 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: /home/evgenz/git
+      device: C:/Users/Evgeny/code/nginx-git-container/git/
       o: bind
