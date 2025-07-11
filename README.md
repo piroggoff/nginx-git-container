@@ -35,11 +35,11 @@ A ready-to-use Docker container for serving Git repositories over HTTP/S using N
 2. **Set environment variables**
    - Copy or edit `.env`:
      ```env
-     NGINX_LOG_DIR=./logs
-     NGINX_PASS_DIR=./authentication
-     GIT_REPOS_DIR=./git-repos
+     NGINX_LOG_DIR=./logs/
+     NGINX_PASS_DIR=./authentication/
+     GIT_REPOS_DIR=./var/www/git/
+     NGINX_PORT=80
      NGINX_HOST=_
-     NGINX_PORT=8080
      ```
 4. **Create password**
     Use this commands on your host-machine to create git-user http password
