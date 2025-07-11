@@ -42,15 +42,20 @@ A ready-to-use Docker container for serving Git repositories over HTTP/S using N
      NGINX_PORT=8080
      ```
 4. **Create password**
-    Use command this command on your host-machine to create git-user http password
+    Use this commands on your host-machine to create git-user http password
     ```sh
-    htpasswd ./authentication/git-htpasswd <username>
+    mkdir ./authentication
+    htpasswd -c ./authentication/git-htpasswd <username>
     ```
-4. **Build and run with Docker Compose:**
+5. **Change permissions on entire project to www-data**
+   ```sh
+   chown -R www-data:www-data .
+   ```
+6. **Build and run with Docker Compose:**
    ```sh
    docker-compose up --build
    ```
-5. **Access the service:**
+7. **Access the service:**
    - Git over HTTP: `git clone http://localhost:8080/git/<repo>.git`
    - Static blank page:  `http://localhost:8080/index`
 
