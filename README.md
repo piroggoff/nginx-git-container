@@ -53,7 +53,7 @@ A ready-to-use Docker container for serving Git repositories over HTTP/S using N
    ```
 6. **Build and run with Docker Compose:**
    ```sh
-   docker-compose up --build
+   docker compose up --build
    ```
 7. **Access the service:**
    - Git over HTTP: `git clone http://localhost:8080/git/<repo>.git`
