@@ -1,5 +1,5 @@
 # 1) Base image: use the latest Debian/Ubuntu
-FROM debian:stable-slim
+FROM debian:12
 
 # 2) Update and install required packages:
 
