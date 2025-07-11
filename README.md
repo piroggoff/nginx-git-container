@@ -83,3 +83,4 @@ A ready-to-use Docker container for serving Git repositories over HTTP/S using N
 - Logs are available in the `logs/` directory (or mapped volume).
 
 ## MIT License
+- Check LICENSE for further details
