@@ -15,24 +15,22 @@ COPY conf-files/nginx.conf /etc/nginx/
 COPY conf-files/git.conf.template /etc/nginx/templates/
 COPY static/ /var/www/static/
 
-# 4) Enable all sites and disable the default
-
-# 5) Create directory for bare repositories (mount point)
+# 4) Create directory for bare repositories (mount point)
 #    On Windows, volume permissions default to root,
 #    On Linux, it is neccesary to make connected volumes chown www-data:www-data
 RUN rm -f /etc/nginx/sites-enabled/default && \
     mkdir -p /var/www/git && \
     mkdir -p /var/run && \
-    chown -R www-data:www-data /var/www/git && \
+    chown -R www-data:www-data /var/www/ && \
     chown -R www-data:www-data /var/run
-   
-# 6) Copy and set up fcgiwrap launch via spawn-fcgi
+
+# 5) Copy and set up fcgiwrap launch via spawn-fcgi
 #    Will be started from entrypoint
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-# 7) Expose port 80
+# 6) Expose port 80
 EXPOSE 80
 
-# 8) Entrypoint
+# 7) Entrypoint
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
