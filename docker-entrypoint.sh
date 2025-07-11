@@ -1,17 +1,17 @@
 #!/bin/bash
 set -e
 
-# Подргрузка переменных окружения для конфига git
+# Load environment variables for git config
+envsubst '$NGINX_PORT $NGINX_HOST' < /etc/nginx/templates/git.conf.template > /etc/nginx/sites-enabled/git.conf
 
-
-# Запускаем fcgiwrap
+# Start fcgiwrap
 spawn-fcgi -s /var/run/fcgiwrap.socket -u www-data -g www-data /usr/sbin/fcgiwrap &
 
-# Ждем создания сокета
+# Wait for socket creation
 sleep 2
 
-# Проверяем конфиг nginx
+# Test nginx config
 nginx -t
 
-# Запускаем nginx
+# Start nginx
 nginx -g "daemon off;"

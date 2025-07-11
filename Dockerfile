@@ -1,12 +1,8 @@
-# 1) Базовый образ: берем последний Debian/Ubuntu
+# 1) Base image: use the latest Debian/Ubuntu
 FROM debian:stable-slim
 
-# 2) Обновляем и устанавливаем нужные пакеты:
-#    - nginx          — сам веб‑сервер
-#    - git             — если нужен git-http-backend
-#    - fcgiwrap        — обработчик FastCGI для Git HTTP
-#    - spawn-fcgi     — утилита для запуска fcgiwrap
-#    - ca-certificates — для HTTPS запросов (при необходимости)
+# 2) Update and install required packages:
+
 ENV DEBIAN_FRONTEND=noninteractive
 COPY packages.txt /tmp/packages.txt
 
@@ -14,30 +10,29 @@ RUN apt-get update && \
     apt-get install -y $(cat /tmp/packages.txt) && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/packages.txt
 
-# 3) Копируем все конфиги Nginx из папки sites-available
-COPY conf-files/sites-enabled/*.conf /etc/nginx/sites-enabled/
+# 3) Copy Nginx configs and static
 COPY conf-files/nginx.conf /etc/nginx/
-#COPY git/ /var/www/git/
+COPY conf-files/git.conf.template /etc/nginx/templates/
 COPY static/ /var/www/static/
 
-# 4) Включаем все сайты и отключаем дефолтный
-RUN rm -f /etc/nginx/sites-enabled/default 2>/dev/null
+# 4) Enable all sites and disable the default
 
-# 5) Создаём директорию для bare‑репозиториев (точка монтирования) 
-# При монтировании volume в Windows права будут определяться как root,
-# поэтому в данном случае будет применено копирование как conf файлов, так и git-репозиториев.
-RUN mkdir -p /var/www/git && \
+# 5) Create directory for bare repositories (mount point)
+#    On Windows, volume permissions default to root,
+#    On Linux, it is neccesary to make connected volumes chown www-data:www-data
+RUN rm -f /etc/nginx/sites-enabled/default && \
+    mkdir -p /var/www/git && \
     mkdir -p /var/run && \
     chown -R www-data:www-data /var/www/git && \
     chown -R www-data:www-data /var/run
-
-# 6) Копируем и настраиваем запуск fcgiwrap через spawn-fcgi
-#    Запуск будет из entrypoint’а
+   
+# 6) Copy and set up fcgiwrap launch via spawn-fcgi
+#    Will be started from entrypoint
 COPY docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-# 7) Указываем порт 80
+# 7) Expose port 80
 EXPOSE 80
 
-# 8) Точка входа
+# 8) Entrypoint
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]

@@ -4,3 +4,4 @@ fcgiwrap
 spawn-fcgi
 ca-certificates
 apache2-utils
+gettext 

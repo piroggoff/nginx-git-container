@@ -1,33 +1,28 @@
 services:
   nginx-git:
+
     build: .
+
     container_name: nginx-git-container
+
     ports:
-      - "80:80"
+      - "80:${NGINX_PORT}"
+
     volumes:
-      - $(NGINX_LOG_DIR):/var/log/nginx/
-      - $(NGINX_PASS_DIR):/etc/nginx/passwd/
-      - $(GIT_REPOS_DIR):/var/www/git/
+      - ${NGINX_LOG_DIR}:/var/log/nginx/
+      - ${NGINX_PASS_DIR}:/etc/nginx/passwd/
+      - ${GIT_REPOS_DIR}:/var/www/git/
     environment:
-      - NGINX_HOST=localhost
-      - NGINX_PORT=80
+    
+      - NGINX_HOST=${NGINX_HOST}
+      - NGINX_PORT=${NGINX_PORT}
       - TZ=Europe/Moscow
-    # Автоматический перезапуск
+
     restart: unless-stopped
     
-    # Проверка здоровья контейнера
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 60s
-
-# Именованные volumes
-volumes:
-  git-repos:
-    driver: local
-    driver_opts:
-      type: none
-      device: C:/Users/Evgeny/code/nginx-git-container/git/
-      o: bind
